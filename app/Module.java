@@ -1,9 +1,15 @@
 import com.google.inject.AbstractModule;
 import java.time.Clock;
 
+import com.google.inject.name.Names;
 import services.ApplicationTimer;
 import services.AtomicCounter;
 import services.Counter;
+import services.booking.BookingService;
+import services.booking.BookingTicketServiceAsyncImpl;
+import services.booking.BookingTicketServiceSyncImpl;
+import services.log.BookingLogServiceImpl;
+import services.log.LogService;
 
 /**
  * This class is a Guice module that tells Guice how to bind several
@@ -26,6 +32,24 @@ public class Module extends AbstractModule {
         bind(ApplicationTimer.class).asEagerSingleton();
         // Set AtomicCounter as the implementation for Counter.
         bind(Counter.class).to(AtomicCounter.class);
+
+        /**
+         * Booking Binding
+         */
+        bind(BookingService.class)
+                .annotatedWith(Names.named("bookingAsync"))
+                .to(BookingTicketServiceAsyncImpl.class);
+
+        bind(BookingService.class)
+                .annotatedWith(Names.named("bookingSync"))
+                .to(BookingTicketServiceSyncImpl.class);
+
+        /**
+         * Log Binding
+         */
+        bind(LogService.class)
+                .annotatedWith(Names.named("bookingLog"))
+                .to(BookingLogServiceImpl.class);
     }
 
 }

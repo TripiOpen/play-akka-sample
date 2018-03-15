@@ -1,12 +1,14 @@
 package models.log;
 
+import io.ebean.Model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
 @Entity(name = "booking_log")
-public class BookingLog implements TripiLog {
+public class BookingLog extends Model implements TripiLog {
 
     @Id
     private int id;
