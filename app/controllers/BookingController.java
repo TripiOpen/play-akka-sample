@@ -2,10 +2,8 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
-import org.reactivestreams.Publisher;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.compat.java8.FutureConverters;
 import services.booking.BookingService;
 import utils.ResponseFactory;
 
@@ -20,12 +18,15 @@ public class BookingController extends Controller {
      */
     private final BookingService<ObjectNode> bookingSync;
     private final BookingService<CompletionStage<ObjectNode>> bookingAsync;
+    private final BookingService<CompletionStage<ObjectNode>> bookingAkka;
 
     @Inject
     public BookingController(@Named("bookingAsync") BookingService bookingAsync,
-                             @Named("bookingSync") BookingService bookingSync) {
+                             @Named("bookingSync") BookingService bookingSync,
+                             @Named("bookingAkka") BookingService bookingAkka) {
         this.bookingSync = bookingSync;
         this.bookingAsync = bookingAsync;
+        this.bookingAkka = bookingAkka;
     }
 
     public Result bookingSync() {
@@ -44,7 +45,13 @@ public class BookingController extends Controller {
         return future;
     }
 
-    public CompletionStage<Result> bookingReactiveWithAkka() {
+    public CompletionStage<Result> bookingWithAkka() {
+        return bookingAkka.bookingTicket().thenApply((ObjectNode jsonNodes) ->
+            ok(ResponseFactory.createResponse(jsonNodes, true))
+        );
+    }
+
+    public CompletionStage<Result> bookingStreamtWithAkka() {
 
         return null;
     }

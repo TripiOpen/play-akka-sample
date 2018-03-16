@@ -7,6 +7,7 @@ import services.AtomicCounter;
 import services.Counter;
 import services.booking.BookingService;
 import services.booking.BookingTicketServiceAsyncImpl;
+import services.booking.BookingTicketServiceAkkaImpl;
 import services.booking.BookingTicketServiceSyncImpl;
 import services.log.BookingLogServiceImpl;
 import services.log.LogService;
@@ -43,6 +44,10 @@ public class Module extends AbstractModule {
         bind(BookingService.class)
                 .annotatedWith(Names.named("bookingSync"))
                 .to(BookingTicketServiceSyncImpl.class);
+
+        bind(BookingService.class)
+                .annotatedWith(Names.named("bookingAkka"))
+                .to(BookingTicketServiceAkkaImpl.class);
 
         /**
          * Log Binding

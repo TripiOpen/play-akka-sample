@@ -14,3 +14,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /booking/sync               controllers.BookingController.bookingSync
 GET     /booking/async              controllers.BookingController.bookingAsync
+GET     /booking/akka               controllers.BookingController.bookingWithAkka

@@ -1,6 +1,5 @@
 package services.booking;
 
-import akka.actor.Actor;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -9,7 +8,7 @@ import models.ticket.TicketFlight;
 import models.ticket.TicketHotel;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
-import scala.concurrent.ExecutionContextExecutor;
+import scala.concurrent.ExecutionContext;
 import services.log.LogService;
 
 import javax.inject.Named;
@@ -20,13 +19,12 @@ import java.util.concurrent.CompletionStage;
 public class BookingTicketServiceAsyncImpl implements BookingService<CompletionStage<ObjectNode>> {
 
     private final LogService logService;
-    private final ExecutionContextExecutor exec;
+    private final ExecutionContext exec;
     private final HttpExecutionContext httpExec;
 
     @Inject
     public BookingTicketServiceAsyncImpl(@Named("bookingLog") LogService logService,
-                                         ExecutionContextExecutor exec,
-                                         HttpExecutionContext httpExec) {
+                                         ExecutionContext exec, HttpExecutionContext httpExec) {
         this.logService = logService;
         this.exec = exec;
         this.httpExec = httpExec;
