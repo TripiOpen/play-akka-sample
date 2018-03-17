@@ -8,8 +8,10 @@ import services.booking.BookingService;
 import utils.ResponseFactory;
 
 import javax.inject.Named;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.function.Function;
 
 public class BookingController extends Controller {
 
@@ -19,14 +21,18 @@ public class BookingController extends Controller {
     private final BookingService<ObjectNode> bookingSync;
     private final BookingService<CompletionStage<ObjectNode>> bookingAsync;
     private final BookingService<CompletionStage<ObjectNode>> bookingAkka;
+    private final BookingService<CompletionStage<List<ObjectNode>>> bookingStream;
+
 
     @Inject
     public BookingController(@Named("bookingAsync") BookingService bookingAsync,
                              @Named("bookingSync") BookingService bookingSync,
-                             @Named("bookingAkka") BookingService bookingAkka) {
+                             @Named("bookingAkka") BookingService bookingAkka,
+                             @Named("bookingStream") BookingService bookingStream) {
         this.bookingSync = bookingSync;
         this.bookingAsync = bookingAsync;
         this.bookingAkka = bookingAkka;
+        this.bookingStream = bookingStream;
     }
 
     public Result bookingSync() {
@@ -46,14 +52,15 @@ public class BookingController extends Controller {
     }
 
     public CompletionStage<Result> bookingWithAkka() {
-        return bookingAkka.bookingTicket().thenApply((ObjectNode jsonNodes) ->
+        return bookingAkka.bookingTicket().thenApplyAsync((ObjectNode jsonNodes) ->
             ok(ResponseFactory.createResponse(jsonNodes, true))
         );
     }
 
-    public CompletionStage<Result> bookingStreamtWithAkka() {
-
-        return null;
+    public CompletionStage<Result> bookingStreamWithAkka() {
+        return bookingStream.bookingTicket().thenApply((List<ObjectNode> jsonNodes) ->
+            ok(ResponseFactory.createResponse(jsonNodes, true))
+        );
     }
 
     public CompletionStage<Result> bookingConcurrentWithAkka() {

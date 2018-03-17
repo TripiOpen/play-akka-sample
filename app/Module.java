@@ -5,10 +5,7 @@ import com.google.inject.name.Names;
 import services.ApplicationTimer;
 import services.AtomicCounter;
 import services.Counter;
-import services.booking.BookingService;
-import services.booking.BookingTicketServiceAsyncImpl;
-import services.booking.BookingTicketServiceAkkaImpl;
-import services.booking.BookingTicketServiceSyncImpl;
+import services.booking.*;
 import services.log.BookingLogServiceImpl;
 import services.log.LogService;
 
@@ -48,6 +45,10 @@ public class Module extends AbstractModule {
         bind(BookingService.class)
                 .annotatedWith(Names.named("bookingAkka"))
                 .to(BookingTicketServiceAkkaImpl.class);
+
+        bind(BookingService.class)
+                .annotatedWith(Names.named("bookingStream"))
+                .to(BookingTicketServiceStreamImpl.class);
 
         /**
          * Log Binding

@@ -31,7 +31,7 @@ public class BookingTicketServiceAkkaImpl implements BookingService<CompletionSt
         return FutureConverters.toJava(ask(bookingActor, findTicket(), 500));
     }
 
-    public ObjectNode findTicket() {
+    private ObjectNode findTicket() {
         ObjectNode data = Json.newObject();
 
         Ticket ticketFlight = TicketFlight.db().createQuery(TicketFlight.class).findOne();
