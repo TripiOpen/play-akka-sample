@@ -63,9 +63,4 @@ public class BookingController extends Controller {
             ok(ResponseFactory.createResponse(jsonNodes, true))
         );
     }
-
-    public CompletionStage<Result> bookingConcurrentWithAkka() {
-
-        return null;
-    }
 }
