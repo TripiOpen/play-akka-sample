@@ -33,10 +33,8 @@ public class BookingTicketServiceAkkaImpl implements BookingService<CompletionSt
 
     private ObjectNode findTicket() {
         ObjectNode data = Json.newObject();
-
-        Ticket ticketFlight = TicketFlight.db().createQuery(TicketFlight.class).findOne();
-        Ticket ticketHotel = TicketHotel.db().createQuery(TicketHotel.class).findOne();
-
+        Ticket ticketFlight = TicketFlight.db().createQuery(TicketFlight.class).findList().get(0);
+        Ticket ticketHotel = TicketHotel.db().createQuery(TicketHotel.class).findList().get(0);
         data.putPOJO("flight", ticketFlight);
         data.putPOJO("hotel", ticketHotel);
         return data;

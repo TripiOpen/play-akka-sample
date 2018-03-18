@@ -3,6 +3,7 @@ package controllers;
 import akka.actor.ActorSystem;
 import javax.inject.*;
 
+import io.ebeaninternal.server.lib.util.Str;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.*;
 import java.util.concurrent.CompletableFuture;
@@ -55,6 +56,36 @@ public class AsyncController extends Controller {
             exec
         );
         return future;
+    }
+
+    /**
+     * Counter thread
+     */
+    public CompletionStage<Result> getThreadAsync() {
+        CompletableFuture future = new CompletableFuture();
+        httpExec.current().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(20000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                future.complete(ok());
+            }
+        });
+        System.out.println("+++++++ Do other stuff");
+        return future;
+    }
+
+    public Result getThreadSync() {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("+++++++ Do other stuff");
+        return ok();
     }
 
 }

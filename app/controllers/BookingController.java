@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
+import org.reactivestreams.Processor;
 
 public class BookingController extends Controller {
 
@@ -21,7 +22,7 @@ public class BookingController extends Controller {
     private final BookingService<ObjectNode> bookingSync;
     private final BookingService<CompletionStage<ObjectNode>> bookingAsync;
     private final BookingService<CompletionStage<ObjectNode>> bookingAkka;
-    private final BookingService<CompletionStage<List<ObjectNode>>> bookingStream;
+    private final BookingService<CompletionStage<ObjectNode>> bookingStream;
 
 
     @Inject
@@ -58,7 +59,7 @@ public class BookingController extends Controller {
     }
 
     public CompletionStage<Result> bookingStreamWithAkka() {
-        return bookingStream.bookingTicket().thenApply((List<ObjectNode> jsonNodes) ->
+        return bookingStream.bookingTicket().thenApply((ObjectNode jsonNodes) ->
             ok(ResponseFactory.createResponse(jsonNodes, true))
         );
     }

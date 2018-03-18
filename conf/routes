@@ -12,6 +12,9 @@ GET     /message                    controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
+GET     /thread/async               controllers.AsyncController.getThreadAsync
+GET     /thread/sync                controllers.AsyncController.getThreadSync
+
 GET     /booking/sync               controllers.BookingController.bookingSync
 GET     /booking/async              controllers.BookingController.bookingAsync
 GET     /booking/akka               controllers.BookingController.bookingWithAkka
