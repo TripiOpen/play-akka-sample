@@ -19,3 +19,5 @@ GET     /booking/sync               controllers.BookingController.bookingSync
 GET     /booking/async              controllers.BookingController.bookingAsync
 GET     /booking/akka               controllers.BookingController.bookingWithAkka
 GET     /booking/stream             controllers.BookingController.bookingStreamWithAkka
+
+GET     /hello                      controllers.ActorMaterializeController.getHello
